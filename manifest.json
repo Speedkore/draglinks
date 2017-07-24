@@ -1,0 +1,39 @@
+{
+
+  "manifest_version": 2,
+  "name": "DragLinks",
+  "version": "1.1.2",
+
+  "description": "Drag links to open them in new foreground/background tab",
+
+  "icons": {
+    "48": "icons/vertical-drag-48.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches":["*://*/*","file:///*"],
+      "js": ["drag.js"]
+    }
+  ],
+
+  "permissions": [
+    "tabs","storage"
+    ],
+
+    "background": {
+      "scripts": ["background-script.js"]
+    },
+
+  "applications": {
+    "gecko": {
+        "id": "sp33dk0r3@gmail.com"
+    }
+   },
+
+   "options_ui": {
+      "page": "options.html",
+      "browser_style": true
+    }
+
+}

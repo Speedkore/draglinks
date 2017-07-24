@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+        body { color: #666; }
+        h2 { color: #444; }
+        td, th { text-align: center;}
+        .query { width: 500px;}
+        .query input {
+            outline: none;
+            display: block;
+            width: 100%;
+            padding: 7px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            background: transparent;
+            color: #444;
+        }
+    </style>
+  </head>
+
+<body>
+  <h2> Dragging selected text settings </h2>
+  <ul style="list-style-type:disc">
+      <li>Set the url including the {%text%} tag that will be replaced by the dragged text
+          <ul>
+              <li>Ex. https://translate.google.es/#en/es/{%text%}</li>
+          </ul>
+      </li>
+      <li>Mark the background checkbox if you want to open the tab in background</li>
+      <li>Leave all query urls blank for disable dragging text</li>
+  </ul>
+  <table>
+      <tr> <th> Drag direction </th> <th> Query url </th> <th> Background tab </th> </tr>
+      <tr> <td>Up</td>    <td class="query"><input type="text" id="up" ></td>     <td><input type="checkbox" id="bup"></td> </tr>
+      <tr> <td>Down</td>  <td class="query"><input type="text" id="down" ></td>   <td><input type="checkbox" id="bdown"></td> </tr>
+      <tr> <td>Left</td>  <td class="query"><input type="text" id="left" ></td>   <td><input type="checkbox" id="bleft"></td> </tr>
+      <tr> <td>Right</td> <td class="query"><input type="text" id="right" ></td>  <td><input type="checkbox" id="bright"></td> </tr>
+  </table>
+  <h2> Dragging links settings </h2>
+  <p>  <input type="checkbox" id="drag_link_LR">  Drag links left and right, instead of up and down </p>
+  <script src="options.js"></script>
+</body>
+
+</html>
