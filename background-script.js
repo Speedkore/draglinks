@@ -18,6 +18,10 @@ function handle_message(message) {
         if (direction == "down") { openbackground = true;}
         if (direction == "left") { openbackground = true;}
         if (direction == "right"){ openbackground = false;}
+        if (settings.drag_link_swap) {
+            openbackground = !openbackground;
+        }
+
         browser.tabs.create({
             active: openbackground,
             url: message.url
@@ -77,6 +81,7 @@ function assign_settings_to_variables(){
             settings.drag_text_bleft = item.drag_text_bleft;
             settings.drag_text_bright = item.drag_text_bright;
             settings.drag_link_LR = item.drag_link_LR;
+            settings.drag_link_swap = item.drag_link_swap;
         }
     }, function(error){console.log(error);})
 }
