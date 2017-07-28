@@ -16,6 +16,7 @@ function save_options(e) {
     drag_text_bleft: document.querySelector('#bleft').checked,
     drag_text_bright: document.querySelector('#bright').checked,
     drag_link_LR: document.querySelector('#drag_link_LR').checked,
+    drag_link_swap: document.querySelector('#drag_link_swap').checked,
      });
     e.preventDefault();
 }
@@ -31,5 +32,6 @@ function restore_options(e) {
              document.querySelector("#bleft").checked = item.drag_text_bleft;
              document.querySelector("#bright").checked = item.drag_text_bright;
              document.querySelector("#drag_link_LR").checked = item.drag_link_LR;
+             document.querySelector("#drag_link_swap").checked = item.drag_link_swap;
     }, function(error){console.log(error);})
 }
