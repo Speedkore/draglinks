@@ -9,6 +9,12 @@ document.addEventListener("dragstart", (e) => {
 });
 
 document.addEventListener("dragend", (e) => {
+    // DRAG INSIDE VIEWPORT CHECK
+    if (e.screenX < window.mozInnerScreenX) return;
+    if (e.screenY < window.mozInnerScreenY) return;
+    if (e.screenX > (window.mozInnerScreenX + window.innerWidth)) return;
+    if (e.screenY > (window.mozInnerScreenY + window.innerHeight)) return;
+
     // LEFT MOUSE BUTTON
     if (e.button==0){
         // SELECTED TEXT DRAGGED
