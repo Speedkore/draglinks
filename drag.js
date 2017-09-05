@@ -9,6 +9,12 @@ document.addEventListener("dragstart", (e) => {
 });
 
 document.addEventListener("dragend", (e) => {
+    // DRAG INSIDE WINDOW CHECK / There isn't a trusty way to check drag inside viewport
+    if (e.screenX < window.screenX) return;
+    if (e.screenY < window.screenY) return;
+    if (e.screenX > window.screenX + window.outerWidth) return;
+    if (e.screenY > window.screenY + window.outerHeight) return;
+
     // LEFT MOUSE BUTTON
     if (e.button==0){
         // SELECTED TEXT DRAGGED
