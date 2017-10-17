@@ -8,7 +8,8 @@
         h2 { color: #444; }
         td, th { text-align: center;}
         .query { width: 500px;}
-        .query input {
+        .queryName { width: 100px;}
+        .queryName input, .query input {
             outline: none;
             display: block;
             width: 100%;
@@ -33,11 +34,30 @@
       <li>Leave all query urls blank for disable dragging text</li>
   </ul>
   <table>
-      <tr> <th> Drag direction </th> <th> Query url </th> <th> Background tab </th> </tr>
-      <tr> <td>Up</td>    <td class="query"><input type="text" id="up" ></td>     <td><input type="checkbox" id="bup"></td> </tr>
-      <tr> <td>Down</td>  <td class="query"><input type="text" id="down" ></td>   <td><input type="checkbox" id="bdown"></td> </tr>
-      <tr> <td>Left</td>  <td class="query"><input type="text" id="left" ></td>   <td><input type="checkbox" id="bleft"></td> </tr>
-      <tr> <td>Right</td> <td class="query"><input type="text" id="right" ></td>  <td><input type="checkbox" id="bright"></td> </tr>
+      <tr> <th> Drag direction </th>  <th> Query name </th> <th> Query url </th> <th> Background tab </th> </tr>
+      <tr>
+          <td>Up</td>
+          <td class="queryName"><input type="text" id="upName" ></td>
+          <td class="query"><input type="text" id="up" ></td>
+          <td><input type="checkbox" id="bup"></td>
+      </tr>
+      <tr>
+          <td>Down</td>
+          <td class="queryName"><input type="text" id="downName" ></td>
+          <td class="query"><input type="text" id="down" ></td>
+          <td><input type="checkbox" id="bdown"></td>
+      </tr>
+      <tr>
+          <td>Left</td>
+          <td class="queryName"><input type="text" id="leftName" ></td>
+          <td class="query"><input type="text" id="left" ></td>  
+          <td><input type="checkbox" id="bleft"></td>
+      </tr>
+      <tr> <td>Right</td>
+          <td class="queryName"><input type="text" id="rightName" ></td>
+          <td class="query"><input type="text" id="right" ></td> 
+          <td><input type="checkbox" id="bright"></td>
+      </tr>
   </table>
   <h2> Dragging links settings </h2>
   <p>  <input type="checkbox" id="drag_link_LR">  Drag links left and right, instead of up and down </p>

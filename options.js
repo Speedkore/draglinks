@@ -11,6 +11,12 @@ function save_options(e) {
     drag_text_down: document.querySelector("#down").value,
     drag_text_left: document.querySelector("#left").value,
     drag_text_right: document.querySelector("#right").value,
+
+    drag_text_upName: document.querySelector("#upName").value,
+    drag_text_downName: document.querySelector("#downName").value,
+    drag_text_leftName: document.querySelector("#leftName").value,
+    drag_text_rightName: document.querySelector("#rightName").value,
+
     drag_text_bup: document.querySelector('#bup').checked,
     drag_text_bdown: document.querySelector('#bdown').checked,
     drag_text_bleft: document.querySelector('#bleft').checked,
@@ -27,6 +33,12 @@ function restore_options(e) {
              document.querySelector("#down").value = item.drag_text_down;
              document.querySelector("#right").value = item.drag_text_right;
              document.querySelector("#left").value = item.drag_text_left;
+
+             document.querySelector("#upName").value = item.drag_text_upName;
+             document.querySelector("#downName").value = item.drag_text_downName;
+             document.querySelector("#rightName").value = item.drag_text_rightName;
+             document.querySelector("#leftName").value = item.drag_text_leftName;
+
              document.querySelector("#bup").checked = item.drag_text_bup;
              document.querySelector("#bdown").checked = item.drag_text_bdown;
              document.querySelector("#bleft").checked = item.drag_text_bleft;

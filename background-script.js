@@ -69,6 +69,7 @@ function assign_settings_to_variables(){
             var google = "https://www.google.com/search?q={%text%}"
             browser.storage.local.set({ drag_text_settings: true,
                                         drag_text_up: google, drag_text_down: duck, drag_text_left: "", drag_text_right: "",
+                                        drag_text_upName: "Google", drag_text_downName: "DuckDuckGo", drag_text_leftName: "", drag_text_rightName: "",
                                         drag_text_bup: false, drag_text_bdown: false, drag_text_bleft: false, drag_text_bright: false});
         }else{
             //assign user settings to in memory variables

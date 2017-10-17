@@ -23,10 +23,11 @@ document.addEventListener("dragover", (e) => {
     if (e.button==0){
         if (span){
         var dir = direction_UDRL(initX, initY, e.screenX, e.screenY)
-        if (dir == "up") span.textContent = settings.drag_text_up;
-        if (dir == "down") span.textContent = settings.drag_text_down;
-        if (dir == "left") span.textContent = settings.drag_text_left;
-        if (dir == "right") span.textContent = settings.drag_text_right;
+        if (dir == "up") span.textContent = settings.drag_text_upName;
+        if (dir == "down") span.textContent = settings.drag_text_downName;
+        if (dir == "left") span.textContent = settings.drag_text_leftName;
+        if (dir == "right") span.textContent = settings.drag_text_rightName;
+        if (!span.textContent || span.textContent=="undefined") span.textContent = "Please introduce a name for this query url in the Draglinks settings page";
         }
 
     }
@@ -66,10 +67,10 @@ document.addEventListener("dragend", (e) => {
 
 function load_settings() {
     browser.storage.local.get().then( function(item){
-            settings.drag_text_up = get_domain(item.drag_text_up);
-            settings.drag_text_down = get_domain(item.drag_text_down);
-            settings.drag_text_right = get_domain(item.drag_text_right);
-            settings.drag_text_left = get_domain(item.drag_text_left);
+            settings.drag_text_upName = item.drag_text_upName;
+            settings.drag_text_downName = item.drag_text_downName;
+            settings.drag_text_rightName = item.drag_text_rightName;
+            settings.drag_text_leftName = item.drag_text_leftName;
     }, function(error){console.log(error);})
 }
 
@@ -84,14 +85,4 @@ function direction_UDRL(initX, initY, screenX, screenY) {
     }
 }
 
-function get_domain(url){
-    var hostname;
 
-     if (url.indexOf("://") > -1) {
-        hostname = url.split('/')[2];
-    }
-    else {
-        hostname = url.split('/')[0];
-    }
-    return hostname;
-}
