@@ -23,6 +23,7 @@ function save_options(e) {
     drag_text_bright: document.querySelector('#bright').checked,
     drag_link_LR: document.querySelector('#drag_link_LR').checked,
     drag_link_swap: document.querySelector('#drag_link_swap').checked,
+    open_next_to_current: document.querySelector('#open_next_to_current').checked,
      });
     e.preventDefault();
 }
@@ -43,7 +44,10 @@ function restore_options(e) {
              document.querySelector("#bdown").checked = item.drag_text_bdown;
              document.querySelector("#bleft").checked = item.drag_text_bleft;
              document.querySelector("#bright").checked = item.drag_text_bright;
+
              document.querySelector("#drag_link_LR").checked = item.drag_link_LR;
              document.querySelector("#drag_link_swap").checked = item.drag_link_swap;
+
+             document.querySelector("#open_next_to_current").checked = item.open_next_to_current;
     }, function(error){console.log(error);})
 }

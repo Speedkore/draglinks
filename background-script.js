@@ -1,10 +1,9 @@
 var settings = {};
-
 browser.runtime.onMessage.addListener(handle_message);
 browser.storage.onChanged.addListener(changed_settings);
 
 
-function handle_message(message) {
+async function handle_message(message) {
 
     if (message.type == "link") {
         var direction;
@@ -21,11 +20,13 @@ function handle_message(message) {
         if (settings.drag_link_swap) {
             openbackground = !openbackground;
         }
+        var current_index = await get_current_tab_id();
+        if (current_index == -1 || !settings.open_next_to_current){
+           browser.tabs.create({ active: openbackground, url: message.url });
+        } else {
+           browser.tabs.create({ active: openbackground, url: message.url, index: current_index + 1 });
+        }
 
-        browser.tabs.create({
-            active: openbackground,
-            url: message.url
-        });
     }
     if (message.type == "text") {
         var direction = direction_UDRL(message.initX, message.initY, message.screenX, message.screenY);
@@ -35,12 +36,15 @@ function handle_message(message) {
         if (direction == "down") { url = settings.drag_text_down; openbackground = settings.drag_text_bdown;}
         if (direction == "left") { url = settings.drag_text_left; openbackground = settings.drag_text_bleft;}
         if (direction == "right"){ url = settings.drag_text_right; openbackground = settings.drag_text_bright;}
+
         if (!url.trim() == '') {
             url = url.replace('{%text%}', message.text);
-            browser.tabs.create({
-                active: !openbackground,
-                url: url
-            });
+            var current_index = await get_current_tab_id();
+            if (current_index == -1 || !settings.open_next_to_current){
+               browser.tabs.create({ active: !openbackground, url: url });
+            } else {
+               browser.tabs.create({ active: !openbackground, url: url, index: current_index + 1 });
+            }
         }
     }
 
@@ -58,31 +62,29 @@ function direction_UDRL(initX, initY, screenX, screenY) {
     }
 }
 
+async function get_current_tab_id() {
+    result = await browser.tabs.query({active: true, currentWindow: true})
+    if (result[0]){ return result[0].index;} else { return -1;}
+}
+
+
 // options page load
 assign_settings_to_variables();
 function changed_settings() {assign_settings_to_variables();}
 function assign_settings_to_variables(){
     browser.storage.local.get().then( function(item){
-        if (!item.drag_text_settings) { 
-            //set default values when there are not settings defined
-            var duck =  "https://duckduckgo.com/?q={%text%}"
-            var google = "https://www.google.com/search?q={%text%}"
-            browser.storage.local.set({ drag_text_settings: true,
-                                        drag_text_up: google, drag_text_down: duck, drag_text_left: "", drag_text_right: "",
-                                        drag_text_upName: "Google", drag_text_downName: "DuckDuckGo", drag_text_leftName: "", drag_text_rightName: "",
-                                        drag_text_bup: false, drag_text_bdown: false, drag_text_bleft: false, drag_text_bright: false});
-        }else{
-            //assign user settings to in memory variables
-            settings.drag_text_up = item.drag_text_up;
-            settings.drag_text_down = item.drag_text_down;
-            settings.drag_text_right = item.drag_text_right;
-            settings.drag_text_left = item.drag_text_left;
-            settings.drag_text_bup = item.drag_text_bup;
-            settings.drag_text_bdown = item.drag_text_bdown;
-            settings.drag_text_bleft = item.drag_text_bleft;
-            settings.drag_text_bright = item.drag_text_bright;
-            settings.drag_link_LR = item.drag_link_LR;
-            settings.drag_link_swap = item.drag_link_swap;
-        }
+        //assign user settings to in memory variables
+        settings.drag_text_up =         (typeof item.drag_text_up != 'undefined') ? item.drag_text_up : ""
+        settings.drag_text_down =       (typeof item.drag_text_down != 'undefined') ? item.drag_text_down : ""
+        settings.drag_text_right =      (typeof item.drag_text_right != 'undefined') ? item.drag_text_right : ""
+        settings.drag_text_left =       (typeof item.drag_text_left != 'undefined') ? item.drag_text_left : ""
+        settings.drag_text_bup =        (typeof item.drag_text_bup != 'undefined') ? item.drag_text_bup : false
+        settings.drag_text_bdown =      (typeof item.drag_text_bdown != 'undefined') ? item.drag_text_bdown : false
+        settings.drag_text_bleft =      (typeof item.drag_text_bleft != 'undefined') ? item.drag_text_bleft : false
+        settings.drag_text_bright =     (typeof item.drag_text_bright != 'undefined') ? item.drag_text_bright : false
+        settings.drag_link_LR =         (typeof item.drag_link_LR != 'undefined') ? item.drag_link_LR : false
+        settings.drag_link_swap =       (typeof item.drag_link_swap != 'undefined') ? item.drag_link_swap : false
+        settings.open_next_to_current = (typeof item.open_next_to_current != 'undefined') ? item.open_next_to_current : false
+
     }, function(error){console.log(error);})
 }

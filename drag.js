@@ -12,7 +12,7 @@ document.addEventListener("dragstart", (e) => {
             e.target.tagName && e.target.tagName.toLowerCase()=='input'&& e.target.type === "text") {
             load_settings();
             span = document.createElement("span");
-            span.style.cssText = "position:fixed;top:0px;left:0px;z-index: 99999999;font-size: 10px;font-weight: bold;background-color:#ffffff;color:black;";
+            span.style.cssText = "position:fixed;top:0px;left:0px;z-index: 99999999;font-size: 20px;font-weight: bold;background-color:#ffffff;color:grey;";
             document.body.appendChild(span);
         }
     }
