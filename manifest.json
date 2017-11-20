@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "DragLinks",
-  "version": "1.9",
+  "version": "1.10",
 
   "description": "Drag links to open them in new foreground/background tab",
 

@@ -27,7 +27,6 @@ document.addEventListener("dragover", (e) => {
         if (dir == "down") span.textContent = settings.drag_text_downName;
         if (dir == "left") span.textContent = settings.drag_text_leftName;
         if (dir == "right") span.textContent = settings.drag_text_rightName;
-        if (!span.textContent || span.textContent=="undefined") span.textContent = "Please introduce a name for this query url in the Draglinks settings page";
         }
 
     }
@@ -48,6 +47,7 @@ document.addEventListener("dragend", (e) => {
     // LEFT MOUSE BUTTON
     if (e.button==0){
         // SELECTED TEXT DRAGGED
+        console.log(e)
         if (e.target.nodeName && e.target.nodeName=="#text"){
             var text = window.getSelection().toString();
             browser.runtime.sendMessage({"type": "text",  "initX": initX, "initY": initY, "screenX": e.screenX, "screenY": e.screenY, "text": text});
@@ -60,6 +60,10 @@ document.addEventListener("dragend", (e) => {
         if (e.target.tagName && e.target.tagName.toLowerCase()=='input'&& e.target.type === "text") {
             var text = e.target.value.substring(e.target.selectionStart, e.target.selectionEnd);
             browser.runtime.sendMessage({"type": "text",  "initX": initX, "initY": initY, "screenX": e.screenX, "screenY": e.screenY, "text": text});
+        }
+        // IMAGE DRAGGED
+        if (e.target.tagName && e.target.tagName.toLowerCase()=='img') {
+            browser.runtime.sendMessage({"type": "link",  "initX": initX, "initY": initY, "screenX": e.screenX, "screenY": e.screenY, "url": e.target.src});
         }
 
     }

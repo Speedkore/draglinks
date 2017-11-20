@@ -1,7 +1,7 @@
 var settings = {};
 browser.runtime.onMessage.addListener(handle_message);
 browser.storage.onChanged.addListener(changed_settings);
-
+browser.runtime.onInstalled.addListener(default_settings);
 
 async function handle_message(message) {
 
@@ -74,17 +74,47 @@ function changed_settings() {assign_settings_to_variables();}
 function assign_settings_to_variables(){
     browser.storage.local.get().then( function(item){
         //assign user settings to in memory variables
-        settings.drag_text_up =         (typeof item.drag_text_up != 'undefined') ? item.drag_text_up : ""
-        settings.drag_text_down =       (typeof item.drag_text_down != 'undefined') ? item.drag_text_down : ""
-        settings.drag_text_right =      (typeof item.drag_text_right != 'undefined') ? item.drag_text_right : ""
-        settings.drag_text_left =       (typeof item.drag_text_left != 'undefined') ? item.drag_text_left : ""
-        settings.drag_text_bup =        (typeof item.drag_text_bup != 'undefined') ? item.drag_text_bup : false
-        settings.drag_text_bdown =      (typeof item.drag_text_bdown != 'undefined') ? item.drag_text_bdown : false
-        settings.drag_text_bleft =      (typeof item.drag_text_bleft != 'undefined') ? item.drag_text_bleft : false
-        settings.drag_text_bright =     (typeof item.drag_text_bright != 'undefined') ? item.drag_text_bright : false
-        settings.drag_link_LR =         (typeof item.drag_link_LR != 'undefined') ? item.drag_link_LR : false
-        settings.drag_link_swap =       (typeof item.drag_link_swap != 'undefined') ? item.drag_link_swap : false
-        settings.open_next_to_current = (typeof item.open_next_to_current != 'undefined') ? item.open_next_to_current : false
+        settings.drag_text_up = item.drag_text_up;
+        settings.drag_text_down = item.drag_text_down;
+        settings.drag_text_right = item.drag_text_right;
+        settings.drag_text_left = item.drag_text_left;
+        settings.drag_text_bup = item.drag_text_bup;
+        settings.drag_text_bdown = item.drag_text_bdown;
+        settings.drag_text_bleft = item.drag_text_bleft;
+        settings.drag_text_bright = item.drag_text_bright;
+        settings.drag_link_LR = item.drag_link_LR;
+        settings.drag_link_swap = item.drag_link_swap;
+        settings.open_next_to_current =  item.open_next_to_current;
 
     }, function(error){console.log(error);})
 }
+
+function default_settings(){
+       browser.storage.local.get().then( function(item){
+            var duck =  "https://duckduckgo.com/?q={%text%}"
+            var google = "https://www.google.com/search?q={%text%}"
+            browser.storage.local.set({ 
+               drag_text_up: ifEmpty(item.drag_text_up, google),
+               drag_text_down: ifEmpty(item.drag_text_down, duck),
+               drag_text_left: ifEmpty(item.drag_text_left, ""),
+               drag_text_right: ifEmpty(item.drag_text_right, ""),
+               drag_text_upName:  ifEmpty(item.drag_text_upName, "Google"),
+               drag_text_downName:  ifEmpty(item.drag_text_downNam, "DuckDuckGo"),
+               drag_text_leftName:  ifEmpty(item.drag_text_leftName, ""),
+               drag_text_rightName:  ifEmpty(item.drag_text_rightName, ""),
+               drag_text_bup:  ifEmpty(item.drag_text_bup, false),
+               drag_text_bdown:  ifEmpty(item.drag_text_bdown, false),
+               drag_text_bleft:  ifEmpty(item.drag_text_bleft, false),
+               drag_text_bright:  ifEmpty(item.drag_text_bright, false),
+               drag_link_LR:  ifEmpty(item.drag_link_LR, false),
+               drag_link_swap:  ifEmpty(item.drag_link_swap, false),
+               open_next_to_current:  ifEmpty(item.open_next_to_current, false),
+            });
+            assign_settings_to_variables();
+       }, function(error){console.log(error);})
+}
+
+function ifEmpty(setting, default_value){
+    return (setting===undefined || setting===null || setting==='undefined')? default_value : setting;
+}
+
