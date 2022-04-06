@@ -1,13 +1,16 @@
-var initY=0;
-var initX=0;
+var startY=0;
+var startX=0;
+var endY=0;
+var endX=0;
 var settings = {}
 var span;
 
 
 document.addEventListener("dragstart", (e) => {
     if (e.button==0){
-        initY = e.screenY;
-        initX = e.screenX;
+        startY = e.screenY;
+        startX = e.screenX;
+        //console.log("init", e.screenY, e.clientY,e);
         if (e.target.nodeName && e.target.nodeName=="#text" ||
             e.target.tagName && e.target.tagName.toLowerCase()=='input'&& e.target.type === "text") {
             load_settings();
@@ -19,10 +22,12 @@ document.addEventListener("dragstart", (e) => {
 });
 
 document.addEventListener("dragover", (e) => {
-   // console.log(e.clientX, e.screenX);
     if (e.button==0){
+        // console.log("end", e.screenY, e.clientY,e);
+        endY = e.screenY;
+        endX = e.screenX;
         if (span){
-        var dir = direction_UDRL(initX, initY, e.screenX, e.screenY)
+        var dir = direction_UDRL(startX, startY,endX, endY)
         if (dir == "up") span.textContent = settings.drag_text_upName;
         if (dir == "down") span.textContent = settings.drag_text_downName;
         if (dir == "left") span.textContent = settings.drag_text_leftName;
@@ -47,23 +52,23 @@ document.addEventListener("dragend", (e) => {
     // LEFT MOUSE BUTTON
     if (e.button==0){
         // SELECTED TEXT DRAGGED
-        console.log(e)
+        //console.log("end", e.screenY, e.clientY,e);
         if (e.target.nodeName && e.target.nodeName=="#text"){
             var text = window.getSelection().toString();
-            browser.runtime.sendMessage({"type": "text",  "initX": initX, "initY": initY, "screenX": e.screenX, "screenY": e.screenY, "text": text});
+            browser.runtime.sendMessage({"type": "text",  "startX": startX, "startY": startY, "endX": endX, "endY": endY, "text": text});
         }
         // LINK DRAGGED
         if (e.target.tagName && e.target.tagName.toLowerCase()=='a') {
-            browser.runtime.sendMessage({"type": "link",  "initX": initX, "initY": initY, "screenX": e.screenX, "screenY": e.screenY, "url": e.target.href});
+            browser.runtime.sendMessage({"type": "link",  "startX": startX, "startY": startY, "endX": endX, "endY": endY, "url": e.target.href});
         }
         // INPUT BOX SELECTED TEXT DRAGGED
         if (e.target.tagName && e.target.tagName.toLowerCase()=='input'&& e.target.type === "text") {
             var text = e.target.value.substring(e.target.selectionStart, e.target.selectionEnd);
-            browser.runtime.sendMessage({"type": "text",  "initX": initX, "initY": initY, "screenX": e.screenX, "screenY": e.screenY, "text": text});
+            browser.runtime.sendMessage({"type": "text",  "startX": startX, "startY": startY, "endX": endX, "endY": endY, "text": text});
         }
         // IMAGE DRAGGED
         if (e.target.tagName && e.target.tagName.toLowerCase()=='img') {
-            browser.runtime.sendMessage({"type": "link",  "initX": initX, "initY": initY, "screenX": e.screenX, "screenY": e.screenY, "url": e.target.src});
+            browser.runtime.sendMessage({"type": "link",  "startX": startX, "startY": startY, "endX": endX, "endY": endY, "url": e.target.src});
         }
 
     }
@@ -79,9 +84,9 @@ function load_settings() {
 }
 
 // helper tools
-function direction_UDRL(initX, initY, screenX, screenY) {
-    deltaX = screenX-initX
-    deltaY = screenY-initY
+function direction_UDRL(startX, startY, endX, endY) {
+    deltaX = endX-startX
+    deltaY = endY-startY
     if (Math.abs(deltaX) > Math.abs(deltaY)){
         return((deltaX>0) ?  "right" : "left");
     }else{

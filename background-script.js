@@ -8,9 +8,9 @@ async function handle_message(message) {
     if (message.type == "link") {
         var direction;
         if (settings.drag_link_LR) {
-            direction = direction_UDRL(message.initX, 0, message.screenX, 0); // only left and right
+            direction = direction_UDRL(message.startX, 0, message.endX, 0); // only left and right
         } else {
-            direction = direction_UDRL(0, message.initY, 0, message.screenY); // only up and down
+            direction = direction_UDRL(0, message.startY, 0, message.endY); // only up and down
         }
         var openbackground;
         if (direction == "up")   { openbackground = false;}
@@ -29,7 +29,7 @@ async function handle_message(message) {
 
     }
     if (message.type == "text") {
-        var direction = direction_UDRL(message.initX, message.initY, message.screenX, message.screenY);
+        var direction = direction_UDRL(message.startX, message.startY, message.endX, message.endY);
         var url;
         var openbackground;
         if (direction == "up")   { url = settings.drag_text_up; openbackground = settings.drag_text_bup;}
@@ -51,9 +51,9 @@ async function handle_message(message) {
 }
 
 // helper tools
-function direction_UDRL(initX, initY, screenX, screenY) {
-    deltaX = screenX-initX
-    deltaY = screenY-initY
+function direction_UDRL(startX, startY, endX, endY) {
+    deltaX = endX-startX
+    deltaY = endY-startY
     var direction;
     if (Math.abs(deltaX) > Math.abs(deltaY)){
         return((deltaX>0) ?  "right" : "left");
